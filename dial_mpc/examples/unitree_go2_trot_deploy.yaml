@@ -25,7 +25,7 @@ default_vx: 1.0
 default_vy: 0.0
 default_vyaw: 0.0
 ramp_up_time: 1.0
-gait: trot
+gait: stand
 
 # Sim
 robot_name: "unitree_go2"
@@ -39,19 +39,22 @@ sync_mode: false
 
 # Real
 real_leg_control: torque
-network_interface: "enp2s0"
+network_interface: "enxc8a3623a01f8"
+# real_kp: 30.0
+# real_kd: 0.65
 real_kp: 30.0
-real_kd: 0.65
+real_kd: 0.1
 initial_position_ctrl:
   [0.0, 0.67, -1.3, 0.0, 0.67, -1.3, 0.0, 0.67, -1.3, 0.0, 0.67, -1.3]
 low_cmd_pub_dt: 0.002
 localization_plugin: "ros2_odometry_plugin"
+# localization_plugin: "vicon_shm_plugin"
 localization_timeout_sec: 0.1
 
 # ROS2 odometry plugin
-odom_topic: "odometry"
+odom_topic: /RAVAGE/odom
 
 # Vicon plugin
-vicon_tracker_ip: "128.2.184.3"
-vicon_object_name: "lecar_go2"
-vicon_z_offset: 0.0
+# vicon_tracker_ip: "192.168.0.9"
+# vicon_object_name: "RAVAGE"
+# vicon_z_offset: 0.3

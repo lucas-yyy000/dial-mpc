@@ -84,6 +84,6 @@ def load_plugin(plugin_name):
         else:
             print(f"Plugin '{plugin_name}' is not registered.")
             return None
-
+    print("Successfully loaded state estimation plugin: ", plugin_name)
     # Return the plugin type
     return plugin_cls

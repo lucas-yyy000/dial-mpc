@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.spatial.transform import Rotation as R
+import threading
 
 import rclpy
 from rclpy.node import Node
@@ -20,11 +21,22 @@ class ROS2OdometryPlugin(BaseLocalizationPlugin, Node):
         self.qpos = None
         self.qvel = None
         self.last_time = None
+        print("Subscribing to: ", config["odom_topic"])
+
+        # while rclpy.ok():
+        #     rclpy.spin(self) 
+                # start rclpy.spin in a background thread
+        self._spin_thread = threading.Thread(target=rclpy.spin, args=(self,), daemon=True)
+        self._spin_thread.start()
+        print("ROS2OdometryPlugin spinning in background on", config["odom_topic"])
+
 
     def __del__(self):
+        print("Died")
         rclpy.shutdown()
 
     def odom_callback(self, msg):
+        print("=========>>> Received odometry <<<===========")
         qpos = np.array(
             [
                 msg.pose.pose.position.x,
@@ -50,6 +62,7 @@ class ROS2OdometryPlugin(BaseLocalizationPlugin, Node):
                 msg.twist.twist.angular.z,
             ]
         )
+        print("Odometry: ", qpos, vb, ab)
         # rotate velocities to world frame
         q = R.from_quat([qpos[3], qpos[4], qpos[5], qpos[6]])
         vw = q.apply(vb)
